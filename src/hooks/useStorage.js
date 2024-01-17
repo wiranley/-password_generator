@@ -18,7 +18,7 @@ const useStorage = () => {
 
     const saveItem = async (key, value) => {
         try {
-            let passwords = getItem(key);
+            let passwords = await getItem(key);
             passwords.push(value);
 
             await AsyncStorage.setItem(key, JSON.stringify(passwords));
@@ -31,9 +31,9 @@ const useStorage = () => {
 
     const removeItem = async (key, item) => {
         try {
-            let passwords = getItem(key);
+            let passwords = await getItem(key);
 
-            let myPasswords = passwords.filter( (password)=>{
+            let myPasswords = passwords.filter((password)=>{
                 return ( password !== item)
             })
 
@@ -42,16 +42,17 @@ const useStorage = () => {
             return myPasswords;
             
         } catch (error) {
-            console.log("Erro ao excluir ", error);
+            console.log("Erro ao deletar ", error);
         }
 
     }
  
-    return (
+    return {
         getItem,
         saveItem,
-        removeItem
-    )
+        removeItem,
+    }
+
 }
 
 export default useStorage;
